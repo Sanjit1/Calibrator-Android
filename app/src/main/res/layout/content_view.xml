@@ -90,7 +90,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Resistance 1"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
 
                             <EditText
                                 android:id="@+id/T1"
@@ -99,7 +99,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Temperature 1"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -114,7 +114,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Resistance 2"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
 
                             <EditText
                                 android:id="@+id/T2"
@@ -123,7 +123,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Temperature 2"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -138,7 +138,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Resistance 3"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
 
                             <EditText
                                 android:id="@+id/T3"
@@ -147,7 +147,7 @@
                                 android:layout_weight="1"
                                 android:ems="10"
                                 android:hint="Temperature 3"
-                                android:inputType="textPersonName" />
+                                android:inputType="number" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -168,7 +168,8 @@
                         android:id="@+id/Enter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Enter" />
+                        android:onClick="enterPressed"
+                        android:text="Calculate" />
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
