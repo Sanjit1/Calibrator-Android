@@ -235,8 +235,6 @@ public class MainActivity extends AppCompatActivity {
                             writer.close();
                             activityWrite = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+arrOfStr[number]+".🧪"));
                             activityWrite.delete();
-                            activityWrite = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+arrOfStr[number]+".data🧪"));
-                            activityWrite.delete();
                             onRestart();
                         }
                         catch(IOException e){}

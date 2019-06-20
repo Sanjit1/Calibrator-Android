@@ -2,11 +2,9 @@ package io.github.sanjit1.calibrator;
 
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,9 +37,16 @@ public class viewActivity extends AppCompatActivity {
 
 
             if(arrOfStr[0]=="New✔✔✔MakeNew"){
-
+                Toast.makeText(this, "Enter name, and Res-Temp values and press Enter", Toast.LENGTH_LONG).show();
+            } else {
+                File ftl = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+arrOfStr[0]+".🧪"));
+                load(ftl);
             }
-
         }catch(IOException e){}
     }
+
+    void load(File ftl){
+
+    }
+
 }
