@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void goCalibrate(View view){
+    public void goCalibrate(View view){
         File cache = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/cache"));
 
         try{
