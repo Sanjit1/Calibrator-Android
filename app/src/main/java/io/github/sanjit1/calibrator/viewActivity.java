@@ -5,7 +5,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
+import Jama.Matrix;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +60,10 @@ public class viewActivity extends AppCompatActivity {
         Btv = findViewById(R.id.B);
         Ctv = findViewById(R.id.C);
 
+        A = 90000;
+        B = 80000;
+        C = 60000;
+
         File cache = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/cache"));
         try {
             FileReader cacheRead = new FileReader(cache);
@@ -112,6 +116,12 @@ public class viewActivity extends AppCompatActivity {
 
     }
 
+    public void testPressed(View v){
+        TextView answer = findViewById(R.id.tempTest);
+        EditText resText = findViewById(R.id.ResTest);
+        if(A<8000) answer.setText(getTemp(Integer.parseInt(resText.getText().toString())));
+    }
+
     public void enterPressed(View v){
         name = name_et.getText().toString();
         R1 = (Double.parseDouble(Res1.getText().toString()));
@@ -122,63 +132,44 @@ public class viewActivity extends AppCompatActivity {
         T3 = (Double.parseDouble(Tem3.getText().toString()));
 
         //Do Some cool Math to get ABC
-        double []ABC = coolMathGames(R1,R2,R3,T1,T2,T3);
-        A=ABC[0];
-        B=ABC[1];
-        C=ABC[2];
-        Atv.setText("A = "+ A+"");
-        Btv.setText("B = "+ B+"");
-        Ctv.setText("C = "+ C+"");
+        if(R1!=R2&&R2!=R3&&R1!=R3&&T1!=T2&&T2!=T3&&T1!=T3) {
+            double[] ABC = coolMathGames(R1, R2, R3, T1, T2, T3);
+            A = ABC[0];
+            B = ABC[1];
+            C = ABC[2];
+            Atv.setText("A = " + A + "");
+            Btv.setText("B = " + B + "");
+            Ctv.setText("C = " + C + "");
+        } else {
+            Toast.makeText(this,"Temp or Res Values are same",Toast.LENGTH_LONG);
+        }
     }
 
     public double[] coolMathGames(double R1,double R2,double R3,double T1,double T2,double T3){
         T1 = T1 + 273.15;
         T2 = T2 + 273.15;
         T3 = T3 + 273.15;
-        //M1*M2 = M3 And M2 = M3*(M1/d)
-        // /** ************My sad attempt at doing Matrices
         double [][] M1 = {
                 {1,ln(R1),cb(ln(R1))},
                 {1,ln(R2),cb(ln(R2))},
                 {1,ln(R3),cb(ln(R3))}
         };
         double [] M3 = {1/T1,1/T2,1/T3};
-        //                       A1  *(    B2   *    C3   -   C2    *   B3   )  +   B1    *(    C2   *   A3    -    C3   *    A2  )  +    C1   *(    A2   *   B3    -    B2   *    A3   )
-        //double det = M1[0][0]*((M1[1][1]*M1[2][2])-(M1[1][2]*M1[2][1])) + M1[0][1]*((M1[1][2]*M1[2][0])-(M1[2][2]*M1[1][0])) + M1[0][2]*((M1[1][0]*M1[2][1])-(M1[1][1]*M1[0][2]));
-        double det = (M1[0][0]*M1[0][2]*M1[2][2])+(M1[0][1]*M1[1][2]*M1[2][0])+(M1[0][2]*M1[1][0]*M1[1][2])-(M1[0][2]*M1[1][1]*M1[0][2])-(M1[0][1]*M1[1][0]*M1[2][2])-(M1[0][0]*M1[1][2]*M1[2][1]);
-        double [][]M1Inv = {
-                {(M1[0][0]/det),(M1[0][1]/det),(M1[0][2]/det)},
-                {(M1[1][0]/det),(M1[1][1]/det),(M1[1][2]/det)},
-                {(M1[2][0]/det),(M1[2][1]/det),(M1[2][2]/det)}
-        };
-
-        double [] tr = {
-                M1Inv[0][0]*M3[0]+M1Inv[0][1]*M3[1]+M1Inv[0][2]*M3[2],
-                M1Inv[1][0]*M3[0]+M1Inv[1][1]*M3[1]+M1Inv[1][2]*M3[2],
-                M1Inv[2][0]*M3[0]+M1Inv[2][1]*M3[1]+M1Inv[2][2]*M3[2]};
-
-                // Ends here ************ **
-        // Using Wikipedia γ(Gamma) replaced with G
-
-            /**double L1 = ln(R1),L2 = ln(R2), L3 = ln(R3);
-            double Y1 = 1 / T1,Y2 = 1 / T2, Y3 = 1 / T3;
-            double G2 = ((Y2-Y1)/L2-L1), G3 = ((Y3-Y1)/(L3-L1));
-            double C  = (((G3-G2)/(L3-L2)*(1/(L1+L2+L3))));
-            double B  = G2 - C * (sq(L1) + (L1*L2) + sq(L2));
-            double A  = Y1 - (L1*(B+ sq(L1)*C));
-            double[] tr = {A,B,C};**/
+        Matrix lhs = new Matrix(M1);
+        Matrix rhs = new Matrix(M3,3);
+        Matrix toReturn = lhs.solve(rhs);
+        double [] tr = {toReturn.get(0,0),toReturn.get(1,0),toReturn.get(2,0)};
         return  tr;
+    }
+
+    public String getTemp(double R){
+        return (1/(A + (B*ln(R)) + (C*cb(ln(R)))))+"";
     }
 
 
     public double ln(double numb){
         return Math.log(numb)/Math.log(Math.E);
     }
-
-    public double sq(double numb){
-            return numb*numb;
-    }
-
     public double cb(double numb){
         return numb*numb*numb;
     }
