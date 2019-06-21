@@ -31,12 +31,12 @@ public class viewActivity extends AppCompatActivity {
     public EditText Tem2;
     public EditText Tem3;
     public String name;
-    public int R1;
-    public int R2;
-    public int R3;
-    public int T1;
-    public int T2;
-    public int T3;
+    public double R1;
+    public double R2;
+    public double R3;
+    public double T1;
+    public double T2;
+    public double T3;
     public double A;
     public double B;
     public double C;
@@ -114,12 +114,12 @@ public class viewActivity extends AppCompatActivity {
 
     public void enterPressed(View v){
         name = name_et.getText().toString();
-        R1 = (Integer.parseInt(Res1.getText().toString()));
-        R2 = (Integer.parseInt(Res2.getText().toString()));
-        R3 = (Integer.parseInt(Res3.getText().toString()));
-        T1 = (Integer.parseInt(Tem1.getText().toString()));
-        T2 = (Integer.parseInt(Tem2.getText().toString()));
-        T3 = (Integer.parseInt(Tem3.getText().toString()));
+        R1 = (Double.parseDouble(Res1.getText().toString()));
+        R2 = (Double.parseDouble(Res2.getText().toString()));
+        R3 = (Double.parseDouble(Res3.getText().toString()));
+        T1 = (Double.parseDouble(Tem1.getText().toString()));
+        T2 = (Double.parseDouble(Tem2.getText().toString()));
+        T3 = (Double.parseDouble(Tem3.getText().toString()));
 
         //Do Some cool Math to get ABC
         double []ABC = coolMathGames(R1,R2,R3,T1,T2,T3);
@@ -131,9 +131,12 @@ public class viewActivity extends AppCompatActivity {
         Ctv.setText("C = "+ C+"");
     }
 
-
+    public double[] coolMathGames(double R1,double R2,double R3,double T1,double T2,double T3){
+        T1 = T1 + 273.15;
+        T2 = T2 + 273.15;
+        T3 = T3 + 273.15;
         //M1*M2 = M3 And M2 = M3*(M1/d)
-        /** ************My sad attempt at doing Matrices
+        // /** ************My sad attempt at doing Matrices
         double [][] M1 = {
                 {1,ln(R1),cb(ln(R1))},
                 {1,ln(R2),cb(ln(R2))},
@@ -141,7 +144,8 @@ public class viewActivity extends AppCompatActivity {
         };
         double [] M3 = {1/T1,1/T2,1/T3};
         //                       A1  *(    B2   *    C3   -   C2    *   B3   )  +   B1    *(    C2   *   A3    -    C3   *    A2  )  +    C1   *(    A2   *   B3    -    B2   *    A3   )
-        double det = M1[0][0]*((M1[1][1]*M1[2][2])-(M1[1][2]*M1[2][1])) + M1[0][1]*((M1[1][2]*M1[2][0])-(M1[2][2]*M1[1][0])) + M1[0][2]*((M1[1][0]*M1[2][1])-(M1[1][1]*M1[0][2]));
+        //double det = M1[0][0]*((M1[1][1]*M1[2][2])-(M1[1][2]*M1[2][1])) + M1[0][1]*((M1[1][2]*M1[2][0])-(M1[2][2]*M1[1][0])) + M1[0][2]*((M1[1][0]*M1[2][1])-(M1[1][1]*M1[0][2]));
+        double det = (M1[0][0]*M1[0][2]*M1[2][2])+(M1[0][1]*M1[1][2]*M1[2][0])+(M1[0][2]*M1[1][0]*M1[1][2])-(M1[0][2]*M1[1][1]*M1[0][2])-(M1[0][1]*M1[1][0]*M1[2][2])-(M1[0][0]*M1[1][2]*M1[2][1]);
         double [][]M1Inv = {
                 {(M1[0][0]/det),(M1[0][1]/det),(M1[0][2]/det)},
                 {(M1[1][0]/det),(M1[1][1]/det),(M1[1][2]/det)},
@@ -153,19 +157,26 @@ public class viewActivity extends AppCompatActivity {
                 M1Inv[1][0]*M3[0]+M1Inv[1][1]*M3[1]+M1Inv[1][2]*M3[2],
                 M1Inv[2][0]*M3[0]+M1Inv[2][1]*M3[1]+M1Inv[2][2]*M3[2]};
 
-                Ends here ************ **/
-        // Using Wikipedia
-        public double[] coolMathGames(int R1,int R2,int R3,int T1,int T2,int T3){
+                // Ends here ************ **
+        // Using Wikipedia γ(Gamma) replaced with G
 
-
-
-
+            /**double L1 = ln(R1),L2 = ln(R2), L3 = ln(R3);
+            double Y1 = 1 / T1,Y2 = 1 / T2, Y3 = 1 / T3;
+            double G2 = ((Y2-Y1)/L2-L1), G3 = ((Y3-Y1)/(L3-L1));
+            double C  = (((G3-G2)/(L3-L2)*(1/(L1+L2+L3))));
+            double B  = G2 - C * (sq(L1) + (L1*L2) + sq(L2));
+            double A  = Y1 - (L1*(B+ sq(L1)*C));
+            double[] tr = {A,B,C};**/
         return  tr;
     }
 
 
     public double ln(double numb){
         return Math.log(numb)/Math.log(Math.E);
+    }
+
+    public double sq(double numb){
+            return numb*numb;
     }
 
     public double cb(double numb){
