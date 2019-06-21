@@ -248,7 +248,13 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:hint="Resistance (Ω)"
-                            android:inputType="textPersonName" />
+                            android:inputType="number" />
+
+                        <Button
+                            android:id="@+id/modelTest"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Test" />
 
                         <TextView
                             android:id="@+id/tempTest"
