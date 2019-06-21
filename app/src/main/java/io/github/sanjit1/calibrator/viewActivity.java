@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.Math;
 
 
 public class viewActivity extends AppCompatActivity {
@@ -121,18 +122,54 @@ public class viewActivity extends AppCompatActivity {
         T3 = (Integer.parseInt(Tem3.getText().toString()));
 
         //Do Some cool Math to get ABC
-        A=0;
-        B=0;
-        C=0;
+        double []ABC = coolMathGames(R1,R2,R3,T1,T2,T3);
+        A=ABC[0];
+        B=ABC[1];
+        C=ABC[2];
         Atv.setText("A = "+ A+"");
         Btv.setText("B = "+ B+"");
         Ctv.setText("C = "+ C+"");
-
-
-
-
     }
 
 
+        //M1*M2 = M3 And M2 = M3*(M1/d)
+        /** ************My sad attempt at doing Matrices
+        double [][] M1 = {
+                {1,ln(R1),cb(ln(R1))},
+                {1,ln(R2),cb(ln(R2))},
+                {1,ln(R3),cb(ln(R3))}
+        };
+        double [] M3 = {1/T1,1/T2,1/T3};
+        //                       A1  *(    B2   *    C3   -   C2    *   B3   )  +   B1    *(    C2   *   A3    -    C3   *    A2  )  +    C1   *(    A2   *   B3    -    B2   *    A3   )
+        double det = M1[0][0]*((M1[1][1]*M1[2][2])-(M1[1][2]*M1[2][1])) + M1[0][1]*((M1[1][2]*M1[2][0])-(M1[2][2]*M1[1][0])) + M1[0][2]*((M1[1][0]*M1[2][1])-(M1[1][1]*M1[0][2]));
+        double [][]M1Inv = {
+                {(M1[0][0]/det),(M1[0][1]/det),(M1[0][2]/det)},
+                {(M1[1][0]/det),(M1[1][1]/det),(M1[1][2]/det)},
+                {(M1[2][0]/det),(M1[2][1]/det),(M1[2][2]/det)}
+        };
+
+        double [] tr = {
+                M1Inv[0][0]*M3[0]+M1Inv[0][1]*M3[1]+M1Inv[0][2]*M3[2],
+                M1Inv[1][0]*M3[0]+M1Inv[1][1]*M3[1]+M1Inv[1][2]*M3[2],
+                M1Inv[2][0]*M3[0]+M1Inv[2][1]*M3[1]+M1Inv[2][2]*M3[2]};
+
+                Ends here ************ **/
+        // Using Wikipedia
+        public double[] coolMathGames(int R1,int R2,int R3,int T1,int T2,int T3){
+
+
+
+
+        return  tr;
+    }
+
+
+    public double ln(double numb){
+        return Math.log(numb)/Math.log(Math.E);
+    }
+
+    public double cb(double numb){
+        return numb*numb*numb;
+    }
 
 }
