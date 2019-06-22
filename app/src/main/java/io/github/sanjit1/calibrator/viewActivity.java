@@ -1,5 +1,6 @@
 package io.github.sanjit1.calibrator;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +14,16 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Math;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class viewActivity extends AppCompatActivity {
 
-
+    public AlertDialog dialog;
     public TextView Atv;
     public TextView Btv;
     public TextView Ctv;
@@ -112,6 +116,8 @@ public class viewActivity extends AppCompatActivity {
             A = Integer.parseInt(arrOfStr[7]);
             B = Integer.parseInt(arrOfStr[8]);
             C = Integer.parseInt(arrOfStr[9]);
+
+
         } catch (IOException e){}
 
     }
@@ -163,9 +169,71 @@ public class viewActivity extends AppCompatActivity {
     }
 
     public String getTemp(double R){
-        return (1/(A + (B*ln(R)) + (C*cb(ln(R)))))+"";
+        return (1/(A + (B*ln(R)) + (C*cb(ln(R))))-273.15)+"";
     }
 
+    public void onSavePressed(View v){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        dialog = builder.setView(R.layout.save_dialog_box).show();
+
+    }
+
+    public void saveCalibration(View v){
+        try{
+            File calibFile =  new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+name+".🧪"));
+            FileWriter toWrite = new FileWriter(calibFile);
+            toWrite.append(name);
+            toWrite.append(System.lineSeparator());
+            toWrite.append(R1+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(R2+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(R3+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(T1+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(T2+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(T3+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(A+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(B+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.append(C+"");
+            toWrite.append(System.lineSeparator());
+            toWrite.flush();
+            toWrite.close();
+
+            File ActList = new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).toString() + "/CalibratorAppData/activities.🧪🧪");
+            FileReader activityList = new FileReader(ActList);
+            BufferedReader br = new BufferedReader(activityList);
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            while (line != null) {
+                sb.append(line).append("\n");
+                line = br.readLine();
+            }
+
+            String fileAsString = sb.toString();
+            final String[] arrOfStr = fileAsString.split(System.lineSeparator(), 0);
+
+            boolean itsAlreadyThere = false;
+            FileWriter actList = new FileWriter(ActList);
+            ArrayList<String> write = new ArrayList<>(Arrays.asList(arrOfStr));
+            for (int adder = 0; adder<write.size(); adder++){
+                    actList.append(write.get(adder));
+                    actList.append(System.lineSeparator());
+                    if (write.get(adder) == name) {
+                        itsAlreadyThere = true;
+                    }
+            }
+            if(!itsAlreadyThere){actList.append(name);}
+            actList.flush();
+            actList.close();
+            dialog.dismiss();
+        }catch(IOException e){}
+    }
 
     public double ln(double numb){
         return Math.log(numb)/Math.log(Math.E);
