@@ -1,10 +1,13 @@
 package io.github.sanjit1.calibrator;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import Jama.Matrix;
 import android.widget.EditText;
@@ -107,18 +110,28 @@ public class viewActivity extends AppCompatActivity {
             final String[] arrOfStr = fileAsString.split(System.lineSeparator(), 0);
 
             name = arrOfStr[0];
-            R1 = Integer.parseInt(arrOfStr[1]);
-            R2 = Integer.parseInt(arrOfStr[2]);
-            R3 = Integer.parseInt(arrOfStr[3]);
-            T1 = Integer.parseInt(arrOfStr[4]);
-            T2 = Integer.parseInt(arrOfStr[5]);
-            T3 = Integer.parseInt(arrOfStr[6]);
-            A = Integer.parseInt(arrOfStr[7]);
-            B = Integer.parseInt(arrOfStr[8]);
-            C = Integer.parseInt(arrOfStr[9]);
+            name_et.setText(name);
+            R1 = Double.parseDouble(arrOfStr[1]);
+            Res1.setText(R1+"");
+            R2 = Double.parseDouble(arrOfStr[2]);
+            Res2.setText(R2+"");
+            R3 = Double.parseDouble(arrOfStr[3]);
+            Res3.setText(R3+"");
+            T1 = Double.parseDouble(arrOfStr[4]);
+            Tem1.setText(T1+"");
+            T2 = Double.parseDouble(arrOfStr[5]);
+            Tem2.setText(T2+"");
+            T3 = Double.parseDouble(arrOfStr[6]);
+            Tem3.setText(T3+"");
+            A  = Double.parseDouble(arrOfStr[7]);
+            Atv.setText(A+"");
+            B  = Double.parseDouble(arrOfStr[8]);
+            Btv.setText(B+"");
+            C  = Double.parseDouble(arrOfStr[9]);
+            Ctv.setText(C+"");
 
 
-        } catch (IOException e){}
+        } catch (IOException e){}// catch (NumberFormatException e){ Log.e("",e.getMessage()+" "+e.getCause());}
 
     }
 
@@ -129,13 +142,15 @@ public class viewActivity extends AppCompatActivity {
     }
 
     public void enterPressed(View v){
-        name = name_et.getText().toString();
-        R1 = (Double.parseDouble(Res1.getText().toString()));
-        R2 = (Double.parseDouble(Res2.getText().toString()));
-        R3 = (Double.parseDouble(Res3.getText().toString()));
-        T1 = (Double.parseDouble(Tem1.getText().toString()));
-        T2 = (Double.parseDouble(Tem2.getText().toString()));
-        T3 = (Double.parseDouble(Tem3.getText().toString()));
+        if(A>8000) {
+            name = name_et.getText().toString();
+            R1 = (Double.parseDouble(Res1.getText().toString()));
+            R2 = (Double.parseDouble(Res2.getText().toString()));
+            R3 = (Double.parseDouble(Res3.getText().toString()));
+            T1 = (Double.parseDouble(Tem1.getText().toString()));
+            T2 = (Double.parseDouble(Tem2.getText().toString()));
+            T3 = (Double.parseDouble(Tem3.getText().toString()));
+        }
 
         //Do Some cool Math to get ABC
         if(R1!=R2&&R2!=R3&&R1!=R3&&T1!=T2&&T2!=T3&&T1!=T3) {
@@ -180,6 +195,13 @@ public class viewActivity extends AppCompatActivity {
 
     public void saveCalibration(View v){
         try{
+            name = name_et.getText().toString();
+            R1 = (Double.parseDouble(Res1.getText().toString()));
+            R2 = (Double.parseDouble(Res2.getText().toString()));
+            R3 = (Double.parseDouble(Res3.getText().toString()));
+            T1 = (Double.parseDouble(Tem1.getText().toString()));
+            T2 = (Double.parseDouble(Tem2.getText().toString()));
+            T3 = (Double.parseDouble(Tem3.getText().toString()));
             File calibFile =  new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+name+".🧪"));
             FileWriter toWrite = new FileWriter(calibFile);
             toWrite.append(name);
@@ -224,14 +246,55 @@ public class viewActivity extends AppCompatActivity {
             for (int adder = 0; adder<write.size(); adder++){
                     actList.append(write.get(adder));
                     actList.append(System.lineSeparator());
-                    if (write.get(adder) == name) {
-                        itsAlreadyThere = true;
-                    }
             }
-            if(!itsAlreadyThere){actList.append(name);}
+            if(!Arrays.asList(arrOfStr).contains(name))actList.append(name);
             actList.flush();
             actList.close();
             dialog.dismiss();
+        }catch(IOException e){}
+    }
+
+    public void dialogDismiss(View v){
+        dialog.dismiss();
+    }
+
+    public void shareAsString(View v){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, ("A = " + A +System.lineSeparator()+"B = " + B +System.lineSeparator()+"C = " + C +System.lineSeparator()));
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
+
+    public void shareAsFile(View v){
+        try{
+            File calibFile =  new File((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)) + ("/CalibratorAppData/"+name+".txt"));
+            FileWriter toWrite = new FileWriter(calibFile);
+            toWrite.append("Res1 = "+R1);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("Res2 = "+R2);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("Res3 = "+R3);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("Temp1 = "+T1);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("Temp2 = "+T2);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("Temp3 = "+T3);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("A = "+A);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("B = "+B);
+            toWrite.append(System.lineSeparator());
+            toWrite.append("C = "+C);
+            toWrite.append(System.lineSeparator());
+            toWrite.flush();
+            toWrite.close();
+
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/*");
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(calibFile.getAbsolutePath()));
+            startActivity(Intent.createChooser(sharingIntent, "Share Calibration File"));
         }catch(IOException e){}
     }
 
