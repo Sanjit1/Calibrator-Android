@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="395dp"
+        android:layout_height="715dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="#2FFFEB3B"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitStart"
+            android:src="@drawable/save" />
+
+        <Button
+            android:id="@+id/saveCalib"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="saveCalibration"
+            android:text="Save Calibration" />
+
+        <Button
+            android:id="@+id/exportAndShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Export ABC values and share" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+    </LinearLayout>
