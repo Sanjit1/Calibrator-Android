@@ -20,16 +20,25 @@
             android:onClick="saveCalibration"
             android:text="Save Calibration" />
 
-        <Button
-            android:id="@+id/exportAndShare"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Export ABC values and share" />
+    <Button
+        android:id="@+id/exportAndShare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="shareAsString"
+        android:text="Share as text" />
 
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancel" />
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="shareAsFile"
+        android:text="Share as text file" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="dialogDismiss"
+        android:text="Cancel" />
 
     </LinearLayout>
