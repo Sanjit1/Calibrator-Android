@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,6 +30,7 @@ import java.util.Arrays;
 
 public class viewActivity extends AppCompatActivity {
 
+    public GraphView graph;
     public AlertDialog dialog;
     public TextView Atv;
     public TextView Btv;
@@ -66,6 +71,7 @@ public class viewActivity extends AppCompatActivity {
         Atv = findViewById(R.id.A);
         Btv = findViewById(R.id.B);
         Ctv = findViewById(R.id.C);
+        graph = findViewById(R.id.graph);
 
         A = 90000;
         B = 80000;
@@ -130,6 +136,8 @@ public class viewActivity extends AppCompatActivity {
             C  = Double.parseDouble(arrOfStr[9]);
             Ctv.setText(C+"");
 
+            enterPressed(graph);
+
 
         } catch (IOException e){}// catch (NumberFormatException e){ Log.e("",e.getMessage()+" "+e.getCause());}
 
@@ -161,8 +169,22 @@ public class viewActivity extends AppCompatActivity {
             Atv.setText("A = " + A + "");
             Btv.setText("B = " + B + "");
             Ctv.setText("C = " + C + "");
+            DataPoint[] data = new DataPoint[800-1];
+
+            for(int i = 1; i<800; i++) {
+                data[i - 1] = new DataPoint(100*i, Double.parseDouble(getTemp(100*i)));
+            }
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
+            graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setYAxisBoundsManual(true);
+            graph.getViewport().setMaxY(100);
+            graph.getViewport().setMinY(-20);
+            graph.getViewport().setMaxX(80000);
+            graph.getViewport().setMinX(0);
+            graph.addSeries(series);
+
         } else {
-            Toast.makeText(this,"Temp or Res Values are same",Toast.LENGTH_LONG);
+            Toast.makeText(this,"Temp and/or Res Values are same",Toast.LENGTH_LONG);
         }
     }
 
