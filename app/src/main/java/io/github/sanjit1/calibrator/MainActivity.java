@@ -58,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 FileWriter calList = new FileWriter(cal);
 
                 calList.append("Sample");
-                calList.append(System.lineSeparator());
-                calList.append("Goat");
                 calList.flush();
                 calList.close();
             }
