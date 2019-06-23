@@ -172,7 +172,7 @@ public class viewActivity extends AppCompatActivity {
             DataPoint[] data = new DataPoint[800-1];
 
             for(int i = 1; i<800; i++) {
-                data[i - 1] = new DataPoint(100*i, Double.parseDouble(getTemp(100*i)));
+                data[i - 1] = new DataPoint( Double.parseDouble(getTemp(100*i)),100*i);
             }
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(data);
             graph.getViewport().setXAxisBoundsManual(true);
